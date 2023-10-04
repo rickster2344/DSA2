@@ -1,0 +1,9 @@
+The cherno
+map - a map is something that uses an index to find a value
+ordered maps- sorted map of values, binary search tree
+- find elements by comparing to other elements and then seeing where the key lands
+- things sorted into the proper place
+unordered map - hashtable
+- faster
+
+
