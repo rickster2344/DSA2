@@ -12,19 +12,21 @@ void loadDictionary(std::string dictLocation, hashTable &dictionary){
     {
         std::string word;
         int numInvalid =0;
+        wordType wType;
         while (getline(infile, word))
         {
-            if(checkWord(word)==valid){
-                for(int i=0; i< word.length(); i++){
-                    word[i] = tolower(word[i]);
-                }       
-                dictionary.insert(word);
-            }
-            else
-            {//not used but useful for debugging
-                // std::cout<<word<<std::endl;
-                numInvalid++;
-            }
+                wType = checkWord(word);
+                if(wType== valid || wType == hasNum){
+                    for(int i=0; i< word.length(); i++){
+                        word[i] = tolower(word[i]);
+                    }       
+                    dictionary.insert(word);
+                }
+                else
+                {//not used but useful for debugging
+                    // std::cout<<word<<std::endl;
+                    numInvalid++;
+                }
         }
         infile.close();
     }
@@ -40,16 +42,22 @@ void loadDictionary(std::string dictLocation, hashTable &dictionary){
 
 wordType checkWord(std::string word){
     int count = 0;
+    bool hasDig = false; 
     for(char ch : word){
-        if(isalnum(ch) ==0 && ch != '-' && ch != '\''){
+        if(isalnum(ch) ==0 && ch != '-' && ch != '\''){//if there is a character that is not a letter or number, and is not - or \ which are valid
             return invalidCh;
+        }
+        if(isdigit(ch) == 1){
+            hasDig = true;
         }
         count++;
         if(count>20){
             return tooLong;
         }
     }
-    //note there is no point in checking if there are digits because nothing happens when there is a digit anyways
+    if(hasDig ==true){
+        return hasNum;
+    }
     return valid;
 }
 
@@ -68,6 +76,7 @@ void spellCheck(std::string inputLoc, std::string outName, hashTable &dictionary
         std::string line;
         std::string word;
         int linelength = 0;
+        wordType wType;
         while (getline(infile, line))
         {
             linelength = line.length();
@@ -81,9 +90,10 @@ void spellCheck(std::string inputLoc, std::string outName, hashTable &dictionary
                     }   
                     else
                     {
-                        if(word.length() != 0)
+                        wType = checkWord(word); // only doing this once instead of running the checkWord function everytime
+                        if(word.length() != 0 && wType != hasNum) //words w/ digits should not be spell checked
                         {
-                            if(checkWord(word)==tooLong)
+                            if(wType==tooLong)
                             {
                                 output << "Long word at line " <<lineNum<< ", starts: " << word.substr(0,20)<< std::endl;
                             }
@@ -91,8 +101,8 @@ void spellCheck(std::string inputLoc, std::string outName, hashTable &dictionary
                             {
                                 output << "Unknown word at line "<<lineNum<< ": " << word<<std::endl;
                             }
-                            word = "";
                         }
+                        word = "";
                     }
                 }   
             }

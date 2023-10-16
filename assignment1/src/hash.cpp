@@ -119,10 +119,11 @@ int hashTable::findPos(const std::string &key){
 
 bool hashTable::rehash(){//dynamic memory allocation for rehash function...
     std::vector<hashItem> temp = data;//current data is stored in temp
-    int newCap = getPrime(capacity);
-
+    int oldCap = capacity;
+    capacity = getPrime(capacity);//new vector of size = next prime number
+    
     try{
-        data.resize(newCap);//new vector of size = next prime number
+        data.resize(capacity);//reallocate data to new size 
     }
     catch (std::bad_alloc&){
         std::cerr << "Error: Unable to allocate memory for new hash table"<<std::endl;
@@ -130,17 +131,15 @@ bool hashTable::rehash(){//dynamic memory allocation for rehash function...
     }
     // initializing the new vector
     filled = 0;
-    for(int i = 0; i<newCap; i++){
+    for(int i = 0; i<capacity; i++){
         data[i].isOccupied = false; //making .isOccupied false is enough since the insert function will fill it in
     }
 
-    for(int i =0; i< capacity; i++){
+    for(int i =0; i< oldCap; i++){
         if(temp[i].isOccupied && !temp[i].isDeleted){
             insert(temp[i].key, temp[i].pv); //need to insert the pointer associated with the key as well if there is one.
         }
     }
-
-    capacity = newCap;
     return true;
 }
 

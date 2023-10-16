@@ -6,7 +6,7 @@
 
 
 
-enum wordType{valid, tooLong, invalidCh};
+enum wordType{valid, tooLong, invalidCh, hasNum};
 wordType checkWord(std::string word);
 
 void loadDictionary(std::string dictLocation, hashTable &dictionary); //pass address of dictionary
