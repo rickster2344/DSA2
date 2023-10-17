@@ -88,7 +88,7 @@ bool hashTable::remove(const std::string &key){
       return false;//entry is not found in hashtable
     }
     data[i].isDeleted = true; //lazy delete the entry
-    filled--;
+    // filled--;// lazily deleted items still take up space!!!!
     return true;
 }
 
