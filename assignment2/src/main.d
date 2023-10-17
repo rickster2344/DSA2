@@ -1,2 +1,1 @@
-src/main.o: src/main.cpp include/hash.h include/spellcheck.h \
- include/hash.h
+src/main.o: src/main.cpp src/../include/heap.h src/../include/hash.h
