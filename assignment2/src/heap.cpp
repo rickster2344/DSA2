@@ -1,4 +1,6 @@
 #include "heap.h"
+#include <iostream>
+#include <vector> //TODO: remove this
 
 //constructor for heap object
 //: is a member initializer which initializes the hashTable data member prior to the constructor body executes
@@ -76,15 +78,19 @@ int heap::insert(const std::string &id, int key, void *pv){
    }
    //passes both, insert into heap by placing at the bottom of the heap, and then percolating up until HOP is satisfied
    
-   //Create new node
-   node newNode;
-   newNode.id = id;
-   newNode.key = key;
-   newNode.pData = pv;
+   // //Create new node
+   // node newNode;
+   // newNode.id = id;
+   // newNode.key = key;
+   // newNode.pData = pv;
 
    //insert into heap then percolate up
    h_filled++;
-   data[h_filled] = newNode; // placing the newNode at the end of the heap
+   data[h_filled].id = id;
+   data[h_filled].key = key;
+   data[h_filled].pData = pv;
+   
+   // data[h_filled] = newNode; // placing the newNode at the end of the heap
    mapping.insert(id, &data[h_filled]); //mapping to that item in the hashtable
 
    percolateUp(h_filled); //percolate up the bottom pos
@@ -134,7 +140,7 @@ int heap::deleteMin(std::string *pId, int *pKey, void *ppData){
       *pKey = data[1].key;// set pKey to the key of root if pKey is provided
    }
     if(ppData!= nullptr){
-      *(static_cast<void **>(ppData)) = data[1].pData;// set ppData to the ptr of root if ppData is provided
+      *(static_cast<void **> (ppData)) = data[1].pData;
    }  
   
    mapping.remove(data[1].id); // remove the id of the root from the tree
