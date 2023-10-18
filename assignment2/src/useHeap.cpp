@@ -139,7 +139,7 @@ int main(){
   int key;
 
 //test inserting things into heap and overfilling
-  for (int i; i<10; i++){
+  for (int i; i<12; i++){
     stringTmp ="string " + to_string(i+1);
     key= 10*(i+1);
 
@@ -149,18 +149,20 @@ int main(){
   }
   myHeap1.printHeap();
   //test deleting minimum 
-  retVal = myHeap1.deleteMin(&stringTmp, &key);
-  cout << "\nCall to 'deleteMin' returned: " << retVal << "\n";
+  // retVal = myHeap1.deleteMin(&stringTmp, &key);
+  // cout << "\nCall to 'deleteMin' returned: " << retVal << "\n";
 
-  if (retVal == 0) {
-  cout << "\nDeleted item with string id \"" << stringTmp
-	<< "\" and key " << key << "\n";
-  }
+  // if (retVal == 0) {
+  // cout << "\nDeleted item with string id \"" << stringTmp
+	// << "\" and key " << key << "\n";
+  // 
+
+
+  //test setKey
+  // myHeap1.setKey("string 6", 25);
+  // myHeap1.printHeap();
+  //test remove item
+  myHeap1.remove("string 3");
   myHeap1.printHeap();
-  myHeap1.deleteMin();
-  myHeap1.printHeap();
-  myHeap1.deleteMin();
-  myHeap1.printHeap();
-  myHeap1.deleteMin();
-  myHeap1.printHeap();
+
 }

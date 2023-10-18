@@ -125,20 +125,11 @@ int heap::setKey(const std::string &id, int key){
    // & = address of, * is dereference (get data at)
 
    // //set the node's key to the new key
-   int oldKey = nodePtr->key; 
    nodePtr->key = key;
 
-   // if the key is smaller, it would move up the tree, otherwise it would move down
-   if (oldKey < key){
-      percolateUp(getPos(nodePtr));
-   }
-   else{
-      percolateDown(getPos(nodePtr));
-   }
-
-   //could also just checks in the functions since they check internally anyways;
-   // percolateUp(getPos(nodePtr));
-   // percolateDown(getPos(nodePtr));
+   //checks in the functions since they check internally anyways;
+   percolateUp(getPos(nodePtr));
+   percolateDown(getPos(nodePtr));
    return 0; //success!
 }
 
@@ -183,7 +174,6 @@ int heap::remove(const std::string &id, int *pKey, void *ppData){
    mapping.remove(nodePtr->id);// remove the id of the removed item from the mapping
    data[getPos(nodePtr)] = data[h_filled]; //move the bottom most item into the position of the removed item
    h_filled--;//must decrement before the percolate down is performed 
-
 
    //percolate up or down as necessary, internal checks will deal with which one is necessary
    percolateDown(getPos(nodePtr));
