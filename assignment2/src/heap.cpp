@@ -1,6 +1,6 @@
 #include "heap.h"
 #include <iostream>
-#include <vector> //TODO: remove this
+#include <vector> 
 
 //constructor for heap object
 //: is a member initializer which initializes the hashTable data member prior to the constructor body executes
@@ -181,7 +181,7 @@ int heap::remove(const std::string &id, int *pKey, void *ppData){
    return 0; //if it is successful
 }
 
-
+//used for debugging, prints tree like a tree (cite Neil Sawhney)
 void heap::printHeap()
 {
     //print the heap so that it looks like a binary tree
@@ -239,13 +239,3 @@ void heap::printHeap()
     std::cout << std::endl;
 
 }
-
-
-// An example of a call to the hash table's setPointer member function:
-//   mapping.setPointer(data[posCur].id, &data[posCur]);
-
-// An example of a call to the hash table's getPointer member function:
-//   node *pn = static_cast<node *> (mapping.getPointer(id, &b));
-
-// Filling in ppData in deleteMin:
-//   *(static_cast<void **> (ppData)) = data[1].pData;
