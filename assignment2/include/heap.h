@@ -1,5 +1,8 @@
 #pragma once
 #include "hash.h"
+#include <vector> //TODO: remove this
+#include <algorithm> //TODO: remove this
+#include <cmath> //TODO: remove this
 
 class heap{
   public:
@@ -62,7 +65,7 @@ class heap{
     //   1 if a node with the given id does not exist
     //
     int remove(const std::string &id, int *pKey = nullptr, void *ppData = nullptr);
-
+    void printHeap();
   private:
     class node{
       public:

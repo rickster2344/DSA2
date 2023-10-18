@@ -12,28 +12,44 @@ heap::heap(int capacity) : mapping(capacity *2){
 }
 
 void heap::percolateDown(int posCur){
-   //if we are in a leaf (no children), no swaps are made and youre finished
-   if (leftChild(posCur) > h_filled){
+   //if we are at a leaf, we're immediately done. this also ensures poscur is within the heap 
+   if(leftChild(posCur) > h_filled){
       return;
    }
 
    node tempNode = data[posCur];
    //compare child w parent and bubble down if HOP not satisfied
-   //swap w larger of two children if both are larger
-   //if both children are equal, will end up swapping w right node
+   //swap w smaller of two children if both are larger
+   //if both children are equal, will end up swapping w left node
+   //if we get to a leaf, exit the loop
 
-   while(tempNode.key > data[leftChild(posCur)].key || tempNode.key > data[rightChild(posCur)].key){
-      //move the current position to the larger of two children
-      if(data[leftChild(posCur)].key > data[rightChild(posCur)].key){
-         posCur = leftChild(posCur);
-      }
-      else{
-         posCur = rightChild(posCur);
+   int tempPos; 
+
+   while(leftChild(posCur) <= h_filled){//continue as long as we are not in a leaf
+      tempPos = posCur;
+      //check if a right child exists, if it does check if it is bigger
+      if(rightChild(tempPos) <= h_filled){
+         if(tempNode.key > data[rightChild(tempPos)].key){
+            posCur = rightChild(tempPos);
+         }
       }
 
-      data[parent(posCur)] = data[posCur]; //make value of parent = value of larger child. 
-      mapping.setPointer(data[posCur].id, &data[parent(posCur)]); //moving pointer in the hashtabe to its parent. note that parent and child have the same ids here 
+      //definitely has a left child, check if left child is bigger than its parent, and not bigger or equal to  than its sibling
+      if(tempNode.key > data[leftChild(tempPos)].key && data[leftChild(tempPos)].key <= data[rightChild(tempPos)].key){
+         posCur = leftChild(tempPos);
+         //note if left = right, we want to swap left
+      }
+
+      if(tempPos != posCur){//if the current position has changed, we know one of its children are bigger
+            data[parent(posCur)] = data[posCur]; //make value of parent = smaller child
+            mapping.setPointer(data[parent(posCur)].id, &data[parent(posCur)]); 
+            tempPos = posCur;
+      }
+      else{// if the current position has not changed, the parent is smaller than both children and this is the right spot
+         break;
+      }
    }
+
    //insert node to the spot found
    data[posCur] = tempNode;
    mapping.setPointer(data[posCur].id, &data[posCur]);
@@ -175,6 +191,64 @@ int heap::remove(const std::string &id, int *pKey, void *ppData){
    return 0; //if it is successful
 }
 
+
+void heap::printHeap()
+{
+    //print the heap so that it looks like a binary tree
+    int level = 0;
+    int levelSize = 1;
+    int levelCount = 0;
+
+    int numLevels = std::log2(h_filled) + 1;
+    for (int i = 1; i <= h_filled; i++)
+    {
+
+        if(!mapping.contains(data[i].id))
+        {
+            // the data is in the heap, but it's not in the hash table
+            throw "THIS IS BREAKING HERE";
+        }
+        // print appropriate beginning tabs where the first level has the most tabs and the last level has none
+        if(levelCount == 0)
+        {
+            for (int j = 0; j < std::pow(2,numLevels - (level+1)); j++)
+            {
+                std::cout << "\t";
+            }
+        }
+        std::cout << data[i].id << ": " << data[i].key;
+        // print appropriate intermediate tabs
+        if (levelCount < levelSize - 1)
+        {
+            for (int j = 0; j < std::pow(2,numLevels - (level+1)); j++)
+            {
+                // if we are in the middle
+                if( levelCount == levelSize/2 -1)
+                {
+                    for (int j = 0; j < std::pow(2,numLevels - 1); j++)
+                    {
+                        std::cout << "\t";
+                    }
+                    break;
+                }
+                else
+                {
+                    std::cout << "\t";
+                }
+            }
+        }
+        levelCount++;
+        if (levelCount == levelSize)
+        {
+            std::cout << std::endl;
+            level++;
+            levelSize = std::pow(2, level);
+            levelCount = 0;
+        }
+    }
+    std::cout << std::endl;
+
+}
 
 
 // An example of a call to the hash table's setPointer member function:
