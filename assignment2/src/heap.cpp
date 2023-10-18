@@ -42,8 +42,9 @@ void heap::percolateDown(int posCur){
 
       if(tempPos != posCur){//if the current position has changed, we know one of its children are bigger
             data[parent(posCur)] = data[posCur]; //make value of parent = smaller child
-            mapping.setPointer(data[parent(posCur)].id, &data[parent(posCur)]); 
-      }
+            mapping.setPointer(data[parent(posCur)].id, &data[parent(posCur)]);
+      } 
+   
       else{// if the current position has not changed, the parent is smaller than both children and this is the right spot
          break;
       }
