@@ -9,9 +9,7 @@ using namespace std;
 #define MAX_STRLEN 1000
 
 string merge(const string &a, const string &b, const string &c){
-    cout<<a<<endl;
-    cout<<b<<endl;
-    cout<<c<<endl;
+
     /*
     In order to check whether c is a valid merge of a and b, we will convert this into a path finding problem.
     String c is formed by sequentially popping the first letter of string a and string b until no letters remain.
@@ -93,13 +91,6 @@ string merge(const string &a, const string &b, const string &c){
 
 	string output;
 
-    for(int j=0;j<(int)b.length()+1;j++){
-        for(int i=0;i<(int)a.length()+1;i++){
-            cout<< matrix[j][i]<< ' ';
-        }
-        cout<< ';' << endl;
-    }
-    
 	// traversing back up the path
     int n = apos + bpos-1; 
 
@@ -115,6 +106,7 @@ string merge(const string &a, const string &b, const string &c){
 			continue;
 		}
         else{
+            //this should never be triggered, but for debugging this will show where the fault happened
             cout<< apos<< ' '<< bpos << endl;
             cout<< matrix[bpos][apos] << endl;
             cout<< matrix[bpos - 1][apos]<< ' '<< matrix[bpos][apos - 1] << endl;
@@ -137,8 +129,7 @@ int main()
 	string path;
 
 	cout << "path to input file: ";
-	// cin  >> path;
-    path = "/Users/Ricklam/DSA2/slkdjf/include/sableSampleIn.txt";
+	cin  >> path;
 
 	ifstream ifile;
 	ofstream ofile;
@@ -150,8 +141,7 @@ int main()
 	}
 
 	cout << "path to output file: ";
-	// cin  >> path;
-    path = "output.txt";
+	cin  >> path;
 
 	ofile.open(path);
 	if (!ofile) {
